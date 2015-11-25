@@ -21,6 +21,7 @@ namespace Xunit
         /// </summary>
         /// <param name="appDomainSupport">Determines whether tests should be run in a separate app domain.</param>
         /// <param name="sourceInformationProvider">The source code information provider.</param>
+        /// <param name="assemblyInfo">Provides information about the test assembly</param>
         /// <param name="assemblyFileName">The test assembly.</param>
         /// <param name="configFileName">The test assembly configuration file.</param>
         /// <param name="shadowCopy">If set to <c>true</c>, runs tests in a shadow copied app domain, which allows
@@ -31,21 +32,32 @@ namespace Xunit
         /// <param name="verifyTestAssemblyExists">Determines whether or not the existence of the test assembly is verified.</param>
         public Xunit2(AppDomainSupport appDomainSupport,
                       ISourceInformationProvider sourceInformationProvider,
+                      IAssemblyInfo assemblyInfo,
                       string assemblyFileName,
                       string configFileName = null,
                       bool shadowCopy = true,
                       string shadowCopyFolder = null,
                       IMessageSink diagnosticMessageSink = null,
                       bool verifyTestAssemblyExists = true)
-            : base(appDomainSupport, sourceInformationProvider, assemblyFileName, configFileName, shadowCopy, shadowCopyFolder, diagnosticMessageSink, verifyTestAssemblyExists)
+            : base(appDomainSupport, sourceInformationProvider, assemblyInfo, assemblyFileName, configFileName, shadowCopy, shadowCopyFolder, diagnosticMessageSink, verifyTestAssemblyExists)
         {
 #if PLATFORM_DOTNET
-            var an = Assembly.Load(new AssemblyName { Name = Path.GetFileNameWithoutExtension(assemblyFileName) }).GetName();
-            var assemblyName = new AssemblyName { Name = an.Name, Version = an.Version };
+            AssemblyName assemblyName = null;
+            if (assemblyInfo != null)
+            {
+                assemblyName = new AssemblyName(Path.GetFileNameWithoutExtension(assemblyFileName));
+                executor = Framework.GetExecutor(assemblyInfo);
+            }
+            else
+            {
+                var an = Assembly.Load(new AssemblyName { Name = Path.GetFileNameWithoutExtension(assemblyFileName) }).GetName();
+                assemblyName = new AssemblyName { Name = an.Name, Version = an.Version };
+                executor = Framework.GetExecutor(assemblyName);
+            }
 #else
             var assemblyName = AssemblyName.GetAssemblyName(assemblyFileName);
-#endif
             executor = Framework.GetExecutor(assemblyName);
+#endif
         }
 
         /// <inheritdoc/>

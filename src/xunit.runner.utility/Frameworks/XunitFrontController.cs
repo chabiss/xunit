@@ -20,11 +20,39 @@ namespace Xunit
         readonly string shadowCopyFolder;
         readonly ISourceInformationProvider sourceInformationProvider;
         readonly Stack<IDisposable> toDispose = new Stack<IDisposable>();
+        readonly IAssemblyInfo assemblyInfo;
 
         /// <summary>
         /// This constructor is for unit testing purposes only.
         /// </summary>
         protected XunitFrontController() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XunitFrontController"/> class.
+        /// </summary>
+        /// <param name="appDomainSupport">Determines whether tests should be run in a separate app domain.</param>
+        /// <param name="assemblyInfo">Provide information about the test assembly</param>
+        /// <param name="assemblyFileName">The test assembly.</param>
+        /// <param name="configFileName">The test assembly configuration file.</param>
+        /// <param name="shadowCopy">If set to <c>true</c>, runs tests in a shadow copied app domain, which allows
+        /// tests to be discovered and run without locking assembly files on disk.</param>
+        /// <param name="shadowCopyFolder">The path on disk to use for shadow copying; if <c>null</c>, a folder
+        /// will be automatically (randomly) generated</param>
+        /// <param name="sourceInformationProvider">The source information provider. If <c>null</c>, uses the default (<see cref="T:Xunit.VisualStudioSourceInformationProvider"/>).</param>
+        /// <param name="diagnosticMessageSink">The message sink which received <see cref="IDiagnosticMessage"/> messages.</param>
+        public XunitFrontController(AppDomainSupport appDomainSupport,
+                                    IAssemblyInfo assemblyInfo,
+                                    string assemblyFileName,
+                                    string configFileName = null,
+                                    bool shadowCopy = true,
+                                    string shadowCopyFolder = null,
+                                    ISourceInformationProvider sourceInformationProvider = null,
+                                    IMessageSink diagnosticMessageSink = null) :
+            this(appDomainSupport, assemblyFileName, configFileName, shadowCopy, shadowCopyFolder, sourceInformationProvider, diagnosticMessageSink)
+        {
+            this.assemblyInfo = assemblyInfo;
+        }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XunitFrontController"/> class.
@@ -104,11 +132,11 @@ namespace Xunit
         protected virtual IFrontController CreateInnerController()
         {
 #if PLATFORM_DOTNET
-            return new Xunit2(appDomainSupport, sourceInformationProvider, assemblyFileName, configFileName, shadowCopy, shadowCopyFolder, diagnosticMessageSink);
+            return new Xunit2(appDomainSupport, sourceInformationProvider, assemblyInfo, assemblyFileName, configFileName, shadowCopy, shadowCopyFolder, diagnosticMessageSink);
 #else
             var assemblyFolder = Path.GetDirectoryName(assemblyFileName);
             if (Directory.GetFiles(assemblyFolder, "xunit.execution.*.dll").Length > 0)
-                return new Xunit2(appDomainSupport, sourceInformationProvider, assemblyFileName, configFileName, shadowCopy, shadowCopyFolder, diagnosticMessageSink);
+                return new Xunit2(appDomainSupport, sourceInformationProvider, assemblyInfo, assemblyFileName, configFileName, shadowCopy, shadowCopyFolder, diagnosticMessageSink);
 
             var xunitPath = Path.Combine(assemblyFolder, "xunit.dll");
             if (File.Exists(xunitPath))

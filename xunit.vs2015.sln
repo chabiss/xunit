@@ -101,6 +101,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Git", "Git", "{E9DF1DC4-BE5
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xunit.abstractions.pcl", "src\abstractions\xunit.abstractions.pcl\xunit.abstractions.pcl.csproj", "{77743589-F177-4007-97B8-50B82A1C7044}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xunit.abstractions.net35", "src\abstractions\xunit.abstractions.net35\xunit.abstractions.net35.csproj", "{53012549-D81B-4E40-B626-67C19265AA6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -187,6 +191,14 @@ Global
 		{331EFFD9-35DC-4793-8D75-805B92A91935}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{331EFFD9-35DC-4793-8D75-805B92A91935}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{331EFFD9-35DC-4793-8D75-805B92A91935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77743589-F177-4007-97B8-50B82A1C7044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77743589-F177-4007-97B8-50B82A1C7044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77743589-F177-4007-97B8-50B82A1C7044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77743589-F177-4007-97B8-50B82A1C7044}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53012549-D81B-4E40-B626-67C19265AA6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53012549-D81B-4E40-B626-67C19265AA6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53012549-D81B-4E40-B626-67C19265AA6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53012549-D81B-4E40-B626-67C19265AA6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -221,5 +233,7 @@ Global
 		{331EFFD9-35DC-4793-8D75-805B92A91935} = {C11636E8-A3D7-4B0C-BC1E-2726B02A101F}
 		{CC649D40-0AEB-47C5-86A0-53F19B464BEC} = {3AD1513F-07B7-4C14-AB10-83682616ACE5}
 		{E9DF1DC4-BE5A-4F7B-A8DF-EC5C6A323A21} = {3AD1513F-07B7-4C14-AB10-83682616ACE5}
+		{77743589-F177-4007-97B8-50B82A1C7044} = {A727699B-E50A-4F83-8627-8BE64237582C}
+		{53012549-D81B-4E40-B626-67C19265AA6F} = {A727699B-E50A-4F83-8627-8BE64237582C}
 	EndGlobalSection
 EndGlobal

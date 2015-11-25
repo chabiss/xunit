@@ -17,6 +17,23 @@ namespace Xunit.Sdk
         /// <summary>
         /// Initializes a new instance of the <see cref="TestFrameworkExecutor{TTestCase}"/> class.
         /// </summary>
+        /// <param name="assemblyInfo">Information about test assembly</param>
+        /// <param name="sourceInformationProvider">The source line number information provider.</param>
+        /// <param name="diagnosticMessageSink">The message sink to report diagnostic messages to.</param>
+        protected TestFrameworkExecutor(IAssemblyInfo assemblyInfo,
+                                        ISourceInformationProvider sourceInformationProvider,
+                                        IMessageSink diagnosticMessageSink)
+        {
+            DisposalTracker = new DisposalTracker();
+            SourceInformationProvider = sourceInformationProvider;
+            DiagnosticMessageSink = diagnosticMessageSink;
+
+            AssemblyInfo = assemblyInfo;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestFrameworkExecutor{TTestCase}"/> class.
+        /// </summary>
         /// <param name="assemblyName">Name of the test assembly.</param>
         /// <param name="sourceInformationProvider">The source line number information provider.</param>
         /// <param name="diagnosticMessageSink">The message sink to report diagnostic messages to.</param>

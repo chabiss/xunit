@@ -30,6 +30,24 @@ namespace Xunit.Sdk
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="XunitTestFrameworkExecutor"/> class.
+        /// </summary>
+        /// <param name="assemblyInfo">name of the test assembly.</param>
+        /// <param name="sourceInformationProvider">The source line number information provider.</param>
+        /// <param name="diagnosticMessageSink">The message sink to report diagnostic messages to.</param>
+        public XunitTestFrameworkExecutor(IAssemblyInfo assemblyInfo,
+                                          ISourceInformationProvider sourceInformationProvider,
+                                          IMessageSink diagnosticMessageSink)
+            : base(assemblyInfo, sourceInformationProvider, diagnosticMessageSink)
+        {
+            string config = null;
+#if !PLATFORM_DOTNET
+            config = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+#endif
+            TestAssembly = new TestAssembly(AssemblyInfo, config);
+        }
+
+        /// <summary>
         /// Gets the test assembly that contains the test.
         /// </summary>
         protected TestAssembly TestAssembly { get; set; }

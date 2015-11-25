@@ -26,5 +26,12 @@ namespace Xunit.Sdk
         {
             return new XunitTestFrameworkExecutor(assemblyName, SourceInformationProvider, DiagnosticMessageSink);
         }
+
+        /// <inheritdoc/>
+        protected override ITestFrameworkExecutor CreateExecutor(IAssemblyInfo assemblyInfo)
+        {
+            return new XunitTestFrameworkExecutor(assemblyInfo, SourceInformationProvider, DiagnosticMessageSink);
+        }
+
     }
 }

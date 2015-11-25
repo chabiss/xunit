@@ -30,7 +30,7 @@ namespace Xunit
         /// will be automatically (randomly) generated</param>
         /// <param name="diagnosticMessageSink">The message sink which received <see cref="IDiagnosticMessage"/> messages.</param>
         /// <param name="verifyAssembliesOnDisk">Determines whether or not to check for the existence of assembly files.</param>
-        public Xunit2Discoverer(AppDomainSupport appDomainSupport,
+        internal Xunit2Discoverer(AppDomainSupport appDomainSupport,
                                 ISourceInformationProvider sourceInformationProvider,
                                 IAssemblyInfo assemblyInfo,
                                 string xunitExecutionAssemblyPath = null,
@@ -50,6 +50,18 @@ namespace Xunit
                                   IMessageSink diagnosticMessageSink = null,
                                   bool verifyAssembliesOnDisk = true)
             : this(appDomainSupport, sourceInformationProvider, null, assemblyFileName, GetXunitExecutionAssemblyPath(appDomainSupport, assemblyFileName, verifyAssembliesOnDisk), configFileName, shadowCopy, shadowCopyFolder, diagnosticMessageSink, verifyAssembliesOnDisk)
+        { }
+
+        internal Xunit2Discoverer(AppDomainSupport appDomainSupport,
+                          ISourceInformationProvider sourceInformationProvider,
+                          IAssemblyInfo assemblyInfo,
+                          string assemblyFileName,
+                          string configFileName,
+                          bool shadowCopy,
+                          string shadowCopyFolder = null,
+                          IMessageSink diagnosticMessageSink = null,
+                          bool verifyAssembliesOnDisk = true)
+            : this(appDomainSupport, sourceInformationProvider, assemblyInfo, assemblyFileName, GetXunitExecutionAssemblyPath(appDomainSupport, assemblyFileName, verifyAssembliesOnDisk), configFileName, shadowCopy, shadowCopyFolder, diagnosticMessageSink, verifyAssembliesOnDisk)
         { }
 
         Xunit2Discoverer(AppDomainSupport appDomainSupport,

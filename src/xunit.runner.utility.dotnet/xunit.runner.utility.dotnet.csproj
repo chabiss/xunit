@@ -111,8 +111,8 @@
     </NuSpecFile>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.abstractions.dll</HintPath>
+    <Reference Include="xunit.abstractions">
+      <HintPath>..\abstractions\xunit.abstractions.pcl\bin\Debug\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

@@ -29,5 +29,12 @@ namespace Xunit.Abstractions
         /// <param name="assemblyName">The name of the assembly to run tests from.</param>
         /// <returns>The test executor.</returns>
         ITestFrameworkExecutor GetExecutor(AssemblyName assemblyName);
+
+        /// <summary>
+        /// Get a test executor.
+        /// </summary>
+        /// <param name="assemblyInfo">The asembly info to run the test from.</param>
+        /// <returns>The test executor.</returns>
+        ITestFrameworkExecutor GetExecutor(IAssemblyInfo assemblyInfo);
     }
 }

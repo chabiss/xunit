@@ -73,6 +73,12 @@ namespace Xunit.Sdk
             return InnerTestFramework.GetExecutor(assemblyName);
         }
 
+        /// <inheritdoc/>
+        public ITestFrameworkExecutor GetExecutor(IAssemblyInfo assembly)
+        {
+            return InnerTestFramework.GetExecutor(assembly);
+        }
+
         static Type GetTestFrameworkType(IAssemblyInfo testAssembly, IMessageSink diagnosticMessageSink)
         {
             try

@@ -65,6 +65,13 @@ namespace Xunit.Sdk
         /// <returns>Returns the test framework executor.</returns>
         protected abstract ITestFrameworkExecutor CreateExecutor(AssemblyName assemblyName);
 
+        /// <summary>
+        /// Override this method to provide the implementation of <see cref="ITestFrameworkExecutor"/>.
+        /// </summary>
+        /// <param name="assemblyInfo">The assembly that is being executed.</param>
+        /// <returns>Returns the test framework executor.</returns>
+        protected abstract ITestFrameworkExecutor CreateExecutor(IAssemblyInfo assemblyInfo);
+
         /// <inheritdoc/>
         public ITestFrameworkDiscoverer GetDiscoverer(IAssemblyInfo assemblyInfo)
         {
@@ -77,6 +84,14 @@ namespace Xunit.Sdk
         public ITestFrameworkExecutor GetExecutor(AssemblyName assemblyName)
         {
             var executor = CreateExecutor(assemblyName);
+            DisposalTracker.Add(executor);
+            return executor;
+        }
+
+        /// <inheritdoc/>
+        public ITestFrameworkExecutor GetExecutor(IAssemblyInfo assemblyInfo)
+        {
+            var executor = CreateExecutor(assemblyInfo);
             DisposalTracker.Add(executor);
             return executor;
         }
