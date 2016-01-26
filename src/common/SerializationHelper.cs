@@ -8,10 +8,31 @@ using Xunit.Serialization;
 namespace Xunit.Sdk
 {
     /// <summary>
+    /// Extensibility API for override how xUnit loads assemblies
+    /// </summary>
+    public interface ICustomAssemblyLoader
+    {
+        Assembly Load(string assemblyName);
+    }
+
+    /// <summary>
+    /// Extensibility point to allow xUnit to use a custom assembly loader
+    /// </summary>
+    public static class CustomAssemblyLoader
+    {
+        public static ICustomAssemblyLoader AssemblyLoader
+        {
+            get { return SerializationHelper.CustomAssemblyLoader; }
+            set { SerializationHelper.CustomAssemblyLoader = value; }
+        }
+    }
+
+    /// <summary>
     /// Serializes and de-serializes objects
     /// </summary>
     static class SerializationHelper
     {
+        static public ICustomAssemblyLoader CustomAssemblyLoader { get; set; }
         /// <summary>
         /// De-serializes an object.
         /// </summary>
@@ -156,30 +177,40 @@ namespace Xunit.Sdk
             if (assemblyName.EndsWith(ExecutionHelper.SubstitutionToken, StringComparison.OrdinalIgnoreCase))
                 assemblyName = assemblyName.Substring(0, assemblyName.Length - ExecutionHelper.SubstitutionToken.Length + 1) + ExecutionHelper.PlatformSuffix;
 #endif
+            Assembly assembly = null;
+
+            if (CustomAssemblyLoader != null)
+            {
+                assembly = CustomAssemblyLoader.Load(assemblyName);
+            }
 
 #if PLATFORM_DOTNET
-            Assembly assembly = null;
-            try
-            {
-                // Make sure we only use the short form
-                var an = new AssemblyName(assemblyName);
-                assembly = Assembly.Load(new AssemblyName { Name = an.Name, Version = an.Version });
-
-            }
-            catch { }
-#else
-            // Support both long name ("assembly, version=x.x.x.x, etc.") and short name ("assembly")
-            var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == assemblyName || a.GetName().Name == assemblyName);
-            if (assembly == null)
+            if( assembly == null)
             {
                 try
                 {
-                    assembly = Assembly.Load(assemblyName);
+                    // Make sure we only use the short form
+                    var an = new AssemblyName(assemblyName);
+                    assembly = Assembly.Load(new AssemblyName { Name = an.Name, Version = an.Version });
+
                 }
                 catch { }
             }
+#else
+            if (assembly == null)
+            {
+                // Support both long name ("assembly, version=x.x.x.x, etc.") and short name ("assembly")
+                assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == assemblyName || a.GetName().Name == assemblyName);
+                if (assembly == null)
+                {
+                    try
+                    {
+                        assembly = Assembly.Load(assemblyName);
+                    }
+                    catch { }
+                }
+            }
 #endif
-
             if (assembly == null)
                 return null;
 
